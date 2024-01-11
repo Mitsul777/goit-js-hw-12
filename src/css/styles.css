@@ -5,7 +5,6 @@
   |============================
 */
 @import url('./reset.css');
-@import url('./vite-promo.css');
 @import url('./header.css');
 
 :root {
@@ -23,3 +22,120 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 36px;
+  gap: 8px;
+
+
+}
+
+input[type="text"] {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px 4px 4px 4px;
+  width: 272px;
+  height: 38px;
+  padding-left: 16px;
+  font-size: 16px;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #4E75FF;
+  color: #fff;
+  border: 1px solid #3498db;
+  border-radius: 4px 4px 4px 4px;
+  cursor: pointer;
+  width: 91px;
+  height: 41px;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+button.load {
+  display: none;
+  justify-content: center;
+  padding: 10px 15px;
+  font-size: 16px;
+  background-color: #4E75FF;
+  color: #fff;
+  border: 1px solid #3498db;
+  border-radius: 4px 4px 4px 4px;
+  cursor: pointer;
+  width: 125px;
+  height: 41px;
+}
+#gallery {
+  gap: 10px;
+  padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 50px;
+}
+
+.image-card {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 100px;
+  box-sizing: border-box;
+  font-size: 10px;
+}
+
+.image-card img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.image-details {
+  display: flex;
+  flex-direction: row; /* Изменено на row */
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f0f0f0;
+  text-align: center;
+  align-items: center; /* Выравнивание элементов в центре */
+}
+.image-details p {
+  margin: 0;
+}
+.loader {
+  position: fixed;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: #FF3D00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  }
+  .loader {
+    display: none;
+}
+
+.loader.visible {
+    display: block;
+}
+
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+  }
