@@ -20,6 +20,7 @@ const loadMoreButton = document.getElementById('loadMore');
 form.addEventListener('submit', async function (event) {
   event.preventDefault();
   loader.classList.add('visible');
+  loadMoreButton.style.display = 'none';
 
   const apiKey = '41459044-8203682bce4ef2c3a7a872845';
   const searchQuery = searchInput.value.trim();  // Отримуємо значення з текстового поля та видаляємо зайві пробіли
@@ -51,7 +52,6 @@ form.addEventListener('submit', async function (event) {
 
         // Додаємо обробник подій на кнопку "Load more..."
         loadMoreButton.addEventListener('click', async function (event) {
-          event.preventDefault();
           currentPage++;
           await loadMoreImages();
         });
