@@ -10,7 +10,7 @@ import axios from 'axios';
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 let currentPage = 1; // Инициализация текущей страницы
-const itemsPerPage = 40; // Количество изображений на странице
+const itemsPerPage = 10; // Количество изображений на странице
 const form = document.querySelector('form');
 const searchInput = document.getElementById('searchInput');
 const galleryContainer = document.getElementById('gallery');
@@ -46,8 +46,10 @@ form.addEventListener('submit', async function (event) {
         // Показуємо або приховуємо кнопку "Load more..." в залежності від наявності наступної сторінки
         if (images.length === itemsPerPage) {
           loadMoreButton.style.display = 'block';
+          loader.style.display = 'block';
         } else {
           loadMoreButton.style.display = 'none';
+          loader.classList.remove('visible');
         }
 
         // Додаємо обробник подій на кнопку "Load more..."
