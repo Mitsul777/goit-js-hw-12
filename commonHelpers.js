@@ -1,14 +1,14 @@
-import{a as f,S as g,i as y}from"./assets/vendor-89feecc5.js";(function(){const o=document.createElement("link").relList;if(o&&o.supports&&o.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))n(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const r of t.addedNodes)r.tagName==="LINK"&&r.rel==="modulepreload"&&n(r)}).observe(document,{childList:!0,subtree:!0});function s(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerpolicy&&(t.referrerPolicy=e.referrerpolicy),e.crossorigin==="use-credentials"?t.credentials="include":e.crossorigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function n(e){if(e.ep)return;e.ep=!0;const t=s(e);fetch(e.href,t)}})();const l=document.querySelector("form"),h=document.getElementById("searchInput"),v=document.getElementById("gallery"),d=document.getElementById("loader");l.addEventListener("submit",async function(i){i.preventDefault(),d.classList.add("visible");const o="41459044-8203682bce4ef2c3a7a872845",s=h.value.trim();if(s!==""){const r=`https://pixabay.com/api/?key=${o}&q=${s}&image_type=photo&orientation=horizontal&safesearch=${!0}`;try{const u=(await f.get(r)).data.hits,p=$(u);v.innerHTML=p;const b=new g(".image-card a"),c=document.getElementById("loadMore");c.style.display="block",c.addEventListener("click",async function(m){m.preventDefault()})}catch(a){console.error("Ошибка при выполнении запроса:",a)}finally{d.classList.remove("visible"),l.reset()}}else y.error({title:"Error",message:"Please enter a search query.",position:"topRight"})});function $(i){return i.map(({webformatURL:o,tags:s,likes:n,views:e,comments:t,downloads:r})=>`
-<div class="image-card">
-<a href="${o}" class="lightbox-trigger">
-    <img src="${o}" alt="${s}">
-</a>
-    <div class="image-details">
-    <p><strong>Likes:</strong> ${n}</p>
-    <p><strong>Views:</strong> ${e}</p>
-    <p><strong>Comments:</strong> ${t}</p>
-    <p><strong>Downloads:</strong> ${r}</p>
-</div>
+import{a as f,S as h,i as L}from"./assets/vendor-89feecc5.js";(function(){const o=document.createElement("link").relList;if(o&&o.supports&&o.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))i(e);new MutationObserver(e=>{for(const t of e)if(t.type==="childList")for(const s of t.addedNodes)s.tagName==="LINK"&&s.rel==="modulepreload"&&i(s)}).observe(document,{childList:!0,subtree:!0});function n(e){const t={};return e.integrity&&(t.integrity=e.integrity),e.referrerpolicy&&(t.referrerPolicy=e.referrerpolicy),e.crossorigin==="use-credentials"?t.credentials="include":e.crossorigin==="anonymous"?t.credentials="omit":t.credentials="same-origin",t}function i(e){if(e.ep)return;e.ep=!0;const t=n(e);fetch(e.href,t)}})();let p=1;const d=40,y=document.querySelector("form"),$=document.getElementById("searchInput"),m=document.getElementById("gallery"),g=document.getElementById("loader"),r=document.getElementById("loadMore");y.addEventListener("submit",async function(a){a.preventDefault(),g.classList.add("visible");const o="41459044-8203682bce4ef2c3a7a872845",n=$.value.trim();if(n!==""){const s=`https://pixabay.com/api/?key=${o}&q=${n}&image_type=photo&orientation=horizontal&safesearch=${!0}&page=${p}&per_page=${d}`;try{const l=(await f.get(s)).data.hits;if(l.length>0){const u=v(l);m.innerHTML=p===1?u:m.innerHTML+u;const k=new h(".image-card a");l.length===d?r.style.display="block":r.style.display="none",r.addEventListener("click",async function(b){b.preventDefault(),p++,await M()})}else r.style.display="none"}catch(c){console.error("Помилка при виконанні запиту:",c)}finally{g.classList.remove("visible"),y.reset()}}else L.error({title:"Error",message:"Please enter a search query.",position:"topRight"})});function v(a){return a.map(({webformatURL:o,tags:n,likes:i,views:e,comments:t,downloads:s})=>`
+    <div class="image-card">
+      <a href="${o}" class="lightbox-trigger">
+        <img src="${o}" alt="${n}">
+      </a>
+      <div class="image-details">
+        <p><strong>Likes:</strong> ${i}</p>
+        <p><strong>Views:</strong> ${e}</p>
+        <p><strong>Comments:</strong> ${t}</p>
+        <p><strong>Downloads:</strong> ${s}</p>
+      </div>
     </div>
-    `).join("")}
+  `).join("")}async function M(){g.classList.add("visible");const a="41459044-8203682bce4ef2c3a7a872845",o=$.value.trim(),t=`https://pixabay.com/api/?key=${a}&q=${o}&image_type=photo&orientation=horizontal&safesearch=${!0}&page=${p}&per_page=${d}`;try{const c=(await f.get(t)).data.hits;if(c.length>0){const l=v(c);m.innerHTML+=l;const u=new h(".image-card a");c.length===d?r.style.display="block":r.style.display="none"}else r.style.display="none"}catch(s){console.error("Помилка при виконанні запиту:",s)}finally{g.classList.remove("visible")}}
 //# sourceMappingURL=commonHelpers.js.map
