@@ -10,7 +10,8 @@ import axios from 'axios';
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 let currentPage = 1; // Инициализация текущей страницы
-const itemsPerPage = 10; // Количество изображений на странице
+let isLastPage = false;
+const itemsPerPage = 20; // Количество изображений на странице
 const form = document.querySelector('form');
 const searchInput = document.getElementById('searchInput');
 const galleryContainer = document.getElementById('gallery');
@@ -37,25 +38,27 @@ form.addEventListener('submit', async function (event) {
 
       if (images.length > 0) {
         const imagesMarkup = createMarkup(images);
+        loader.style.display = 'block';
+
 
         // Перевіряємо, чи це перша сторінка, і відповідно вставляємо HTML або додаємо до існуючого
         galleryContainer.innerHTML = currentPage === 1 ? imagesMarkup : galleryContainer.innerHTML + imagesMarkup;
 
         const lightbox = new SimpleLightbox('.image-card a');
 
-        // Показуємо або приховуємо кнопку "Load more..." в залежності від наявності наступної сторінки
         if (images.length === itemsPerPage) {
           loadMoreButton.style.display = 'block';
-          loader.style.display = 'block';
+          loader.style.display = 'none';
         } else {
           loadMoreButton.style.display = 'none';
-          loader.classList.remove('visible');
+          loader.classList.remove('none');
         }
 
         // Додаємо обробник подій на кнопку "Load more..."
         loadMoreButton.addEventListener('click', async function (event) {
           currentPage++;
           await loadMoreImages();
+          loader.classList.remove('visible');
         });
       } else {
         loadMoreButton.style.display = 'none';
@@ -92,8 +95,6 @@ function createMarkup(imgArr) {
 }
 
 async function loadMoreImages() {
-  loader.classList.add('visible');
-
   const apiKey = '41459044-8203682bce4ef2c3a7a872845';
   const searchQuery = searchInput.value.trim();
   const imageType = 'photo';
@@ -114,8 +115,19 @@ async function loadMoreImages() {
       if (images.length === itemsPerPage) {
         loadMoreButton.style.display = 'block';
       } else {
-        loadMoreButton.style.display = 'none';
+        loadMoreButton.style.display = 'block';
+        isLastPage = true;
       }
+      if (isLastPage) {
+        iziToast.error({
+          title: 'Error',
+          message: 'No more results available.',
+          position: 'topRight',
+        });
+      }
+
+      // Вызываем метод refresh() на экземпляре SimpleLightbox
+      lightbox.refresh();
     } else {
       loadMoreButton.style.display = 'none';
     }
@@ -125,3 +137,4 @@ async function loadMoreImages() {
     loader.classList.remove('visible');
   }
 }
+
