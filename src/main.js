@@ -11,6 +11,7 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 let currentPage = 1; // Инициализация текущей страницы
 let isLastPage = false;
+let searchQuery;
 const itemsPerPage = 40; // Количество изображений на странице
 const form = document.querySelector('form');
 const searchInput = document.getElementById('searchInput');
@@ -20,15 +21,24 @@ const loadMoreButton = document.getElementById('loadMore');
 
 form.addEventListener('submit', async function (event) {
   event.preventDefault();
+  currentPage = 1;
   galleryContainer.innerHTML = '';
   loader.classList.remove('hide')
   loadMoreButton.style.display = 'none';
-
   const apiKey = '41459044-8203682bce4ef2c3a7a872845';
-  const searchQuery = searchInput.value.trim();  // Отримуємо значення з текстового поля та видаляємо зайві пробіли
+  searchQuery = searchInput.value.trim();  // Отримуємо значення з текстового поля та видаляємо зайві пробіли
 
   // Перевіряємо, чи введений пошуковий запит
-  if (searchQuery !== "") {
+  if (searchQuery === "") {
+    loader.classList.add('hide');
+    iziToast.error({
+      title: 'Error',
+      message: 'Please enter a search query.',
+      position: 'topRight',
+    });
+    return;
+  }
+
     const imageType = 'photo'; // Значення параметра image_type
     const orientation = 'horizontal'; // Значення параметра orientation
     const safeSearch = true; // Значення параметра safesearch
@@ -43,7 +53,7 @@ form.addEventListener('submit', async function (event) {
 
 
         // Перевіряємо, чи це перша сторінка, і відповідно вставляємо HTML або додаємо до існуючого
-        galleryContainer.innerHTML = currentPage === 1 ? imagesMarkup : galleryContainer.innerHTML + imagesMarkup;
+        galleryContainer.insertAdjacentHTML('beforeend', imagesMarkup);
 
         const lightbox = new SimpleLightbox('.image-card a');
 
@@ -70,13 +80,6 @@ form.addEventListener('submit', async function (event) {
       // loader.classList.remove('visible');
       form.reset();
     }
-  } else {
-    iziToast.error({
-      title: 'Error',
-      message: 'Please enter a search query.',
-      position: 'topRight',
-    });
-  }
 });
 
 function createMarkup(imgArr) {
@@ -97,7 +100,6 @@ function createMarkup(imgArr) {
 
 async function loadMoreImages() {
   const apiKey = '41459044-8203682bce4ef2c3a7a872845';
-  const searchQuery = searchInput.value.trim();
   const imageType = 'photo';
   const orientation = 'horizontal';
   const safeSearch = true;
