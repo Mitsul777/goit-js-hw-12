@@ -122,14 +122,9 @@ button.load {
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
   }
-  .loader {
-    display: none;
+.loader.hide {
+  display: none;
 }
-
-.loader.visible {
-    display: block;
-}
-
 
   @keyframes rotation {
   0% {

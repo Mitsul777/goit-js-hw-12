@@ -11,7 +11,7 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 let currentPage = 1; // Инициализация текущей страницы
 let isLastPage = false;
-const itemsPerPage = 20; // Количество изображений на странице
+const itemsPerPage = 40; // Количество изображений на странице
 const form = document.querySelector('form');
 const searchInput = document.getElementById('searchInput');
 const galleryContainer = document.getElementById('gallery');
@@ -20,7 +20,8 @@ const loadMoreButton = document.getElementById('loadMore');
 
 form.addEventListener('submit', async function (event) {
   event.preventDefault();
-  loader.classList.add('visible');
+  galleryContainer.innerHTML = '';
+  loader.classList.remove('hide')
   loadMoreButton.style.display = 'none';
 
   const apiKey = '41459044-8203682bce4ef2c3a7a872845';
@@ -38,7 +39,7 @@ form.addEventListener('submit', async function (event) {
 
       if (images.length > 0) {
         const imagesMarkup = createMarkup(images);
-        loader.style.display = 'block';
+        loader.classList.add('hide')
 
 
         // Перевіряємо, чи це перша сторінка, і відповідно вставляємо HTML або додаємо до існуючого
@@ -48,17 +49,17 @@ form.addEventListener('submit', async function (event) {
 
         if (images.length === itemsPerPage) {
           loadMoreButton.style.display = 'block';
-          loader.style.display = 'none';
+          // loader.style.display = 'none';
         } else {
           loadMoreButton.style.display = 'none';
-          loader.classList.remove('none');
+          // loader.classList.remove('none');
         }
 
         // Додаємо обробник подій на кнопку "Load more..."
         loadMoreButton.addEventListener('click', async function (event) {
           currentPage++;
           await loadMoreImages();
-          loader.classList.remove('visible');
+          // loader.classList.remove('visible');
         });
       } else {
         loadMoreButton.style.display = 'none';
@@ -66,7 +67,7 @@ form.addEventListener('submit', async function (event) {
     } catch (error) {
       console.error("Помилка при виконанні запиту:", error);
     } finally {
-      loader.classList.remove('visible');
+      // loader.classList.remove('visible');
       form.reset();
     }
   } else {
@@ -111,19 +112,19 @@ async function loadMoreImages() {
       galleryContainer.innerHTML += imagesMarkup;
       const lightbox = new SimpleLightbox('.image-card a');
 
-      // Показуємо або приховуємо кнопку "Load more..." в залежності від наявності наступної сторінки
-      if (images.length === itemsPerPage) {
-        loadMoreButton.style.display = 'block';
-      } else {
-        loadMoreButton.style.display = 'block';
+      // Округляем вверх значение totalHits / perPage и сверяем с номером страницы
+      const totalPages = Math.ceil(response.data.totalHits / itemsPerPage);
+
+      if (currentPage >= totalPages) {
+        loadMoreButton.style.display = 'none';
         isLastPage = true;
-      }
-      if (isLastPage) {
-        iziToast.error({
-          title: 'Error',
-          message: 'No more results available.',
+
+        iziToast.info({
+          message: 'We are sorry, but you reached the end of search results.',
           position: 'topRight',
         });
+      } else {
+        loadMoreButton.style.display = 'block';
       }
 
       // Вызываем метод refresh() на экземпляре SimpleLightbox
@@ -134,7 +135,7 @@ async function loadMoreImages() {
   } catch (error) {
     console.error("Помилка при виконанні запиту:", error);
   } finally {
-    loader.classList.remove('visible');
+    // loader.classList.remove('visible');
   }
 }
 
