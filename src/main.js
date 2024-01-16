@@ -53,11 +53,7 @@ form.addEventListener('submit', async function (event) {
 
 
         galleryContainer.insertAdjacentHTML('beforeend', imagesMarkup);
-        const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
-        window.scrollBy({
-          top: cardHeight * 2,
-          behavior: "smooth",
-        })
+
         const lightbox = new SimpleLightbox('.image-card a');
 
         if (images.length === itemsPerPage) {
