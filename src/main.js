@@ -52,9 +52,12 @@ form.addEventListener('submit', async function (event) {
         loader.classList.add('hide')
 
 
-        // Перевіряємо, чи це перша сторінка, і відповідно вставляємо HTML або додаємо до існуючого
         galleryContainer.insertAdjacentHTML('beforeend', imagesMarkup);
-
+        const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+        window.scrollBy({
+          top: cardHeight * 2,
+          behavior: "smooth",
+        })
         const lightbox = new SimpleLightbox('.image-card a');
 
         if (images.length === itemsPerPage) {
@@ -62,6 +65,11 @@ form.addEventListener('submit', async function (event) {
           // loader.style.display = 'none';
         } else {
           loadMoreButton.style.display = 'none';
+          iziToast.info({
+            message: 'We are sorry, but you reached the end of search results.',
+            position: 'topRight',
+          });
+
           // loader.classList.remove('none');
         }
 
@@ -69,7 +77,6 @@ form.addEventListener('submit', async function (event) {
         loadMoreButton.addEventListener('click', async function (event) {
           currentPage++;
           await loadMoreImages();
-          // loader.classList.remove('visible');
         });
       } else {
         loadMoreButton.style.display = 'none';
@@ -104,22 +111,28 @@ async function loadMoreImages() {
   const orientation = 'horizontal';
   const safeSearch = true;
   const apiUrl = `https://pixabay.com/api/?key=${apiKey}&q=${searchQuery}&image_type=${imageType}&orientation=${orientation}&safesearch=${safeSearch}&page=${currentPage}&per_page=${itemsPerPage}`;
-
   try {
+    loader.classList.remove('hide')
     const response = await axios.get(apiUrl);
     const images = response.data.hits;
 
     if (images.length > 0) {
       const imagesMarkup = createMarkup(images);
-      galleryContainer.innerHTML += imagesMarkup;
+      galleryContainer.insertAdjacentHTML('beforeend', imagesMarkup);
+      galleryContainer.insertAdjacentHTML('beforeend', imagesMarkup);
+      const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+      window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+      })
       const lightbox = new SimpleLightbox('.image-card a');
 
-      // Округляем вверх значение totalHits / perPage и сверяем с номером страницы
       const totalPages = Math.ceil(response.data.totalHits / itemsPerPage);
 
       if (currentPage >= totalPages) {
         loadMoreButton.style.display = 'none';
         isLastPage = true;
+        loader.classList.add('hide')
 
         iziToast.info({
           message: 'We are sorry, but you reached the end of search results.',
@@ -137,7 +150,7 @@ async function loadMoreImages() {
   } catch (error) {
     console.error("Помилка при виконанні запиту:", error);
   } finally {
-    // loader.classList.remove('visible');
+    loader.classList.add('hide')
   }
 }
 
