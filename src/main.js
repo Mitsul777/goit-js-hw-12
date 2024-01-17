@@ -109,6 +109,7 @@ async function loadMoreImages() {
   const apiUrl = `https://pixabay.com/api/?key=${apiKey}&q=${searchQuery}&image_type=${imageType}&orientation=${orientation}&safesearch=${safeSearch}&page=${currentPage}&per_page=${itemsPerPage}`;
   try {
     loader.classList.remove('hide')
+    loadMoreButton.style.display = 'none';
     const response = await axios.get(apiUrl);
     const images = response.data.hits;
 
